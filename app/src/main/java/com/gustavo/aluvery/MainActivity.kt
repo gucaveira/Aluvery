@@ -1,14 +1,12 @@
 package com.gustavo.aluvery
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.gustavo.aluvery.ui.theme.AluveryTheme
 
@@ -17,12 +15,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             AluveryTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
+                Surface {
+                    MyFirstComposable()
                 }
             }
         }
@@ -30,14 +24,25 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+fun MyFirstComposable() {
+    Text(text = "My first composable")
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showSystemUi = true,
+    uiMode = UI_MODE_NIGHT_YES
+)
+@Preview(
+    name = "TextPreview",
+    heightDp = 200,
+    widthDp = 300,
+    showBackground = true
+)
 @Composable
-fun DefaultPreview() {
+fun MyFirstComposablePreview() {
     AluveryTheme {
-        Greeting("Android")
+        Surface {
+            MyFirstComposable()
+        }
     }
 }
