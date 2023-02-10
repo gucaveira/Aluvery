@@ -1,24 +1,39 @@
 package com.gustavo.aluvery
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.gustavo.aluvery.ui.theme.AluveryTheme
+import com.gustavo.aluvery.ui.theme.Purple500
+import com.gustavo.aluvery.ui.theme.Teal200
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,84 +41,69 @@ class MainActivity : ComponentActivity() {
         setContent {
             AluveryTheme {
                 Surface {
-                    MyFirstComposable()
+                    ProductItem()
                 }
             }
         }
     }
 }
 
-// a orde do Modifier importa
 @Preview(showBackground = true)
 @Composable
-fun CustomLayoutPreview() {
-    Column(
-        Modifier
-            .padding(all = 8.dp)
-            .background(color = Color.Blue)
-            .fillMaxWidth()
-            .fillMaxHeight()
+fun ProductItem() {
+
+    Surface(
+        modifier = Modifier.padding(8.dp),
+        shape = RoundedCornerShape(15.dp),
+        elevation = 4.dp
     ) {
-        Text(text = "text 1")
-        Text(text = "text 2")
-
-        Row(
-            Modifier
-                .padding(all = 8.dp)
-                .background(color = Color.Green)
-                .fillMaxHeight(0.1f)
+        Column(
+            modifier = Modifier
+                .heightIn(250.dp, 300.dp)
+                .width(250.dp)
         ) {
-            Text(text = "text 3")
-            Text(text = "text 4")
-        }
-
-        Box(
-            Modifier
-                .padding(all = 8.dp)
-                .background(color = Color.Red)
-        ) {
-            Row(
-                Modifier
-                    .padding(all = 8.dp)
-                    .background(color = Color.Cyan)
+            val imageSize = 100.dp
+            Box(
+                modifier = Modifier
+                    .height(imageSize)
+                    .background(
+                        brush = Brush.horizontalGradient(
+                            colors = listOf(
+                                Purple500,
+                                Teal200
+                            )
+                        )
+                    )
+                    .fillMaxWidth()
             ) {
-                Text(text = "text 5")
-                Text(text = "text 6")
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    contentDescription = null,
+                    Modifier
+                        .size(imageSize)
+                        .offset(y = imageSize / 2)
+                        .clip(shape = CircleShape)
+                        .align(BottomCenter)
+                )
             }
 
-            Column(
-                Modifier
-                    .padding(all = 8.dp)
-                    .background(color = Color.Yellow)
-            ) {
-                Text(text = "Texto 7")
-                Text(text = "Texto 8")
+            Spacer(modifier = Modifier.height(imageSize/2))
+
+            Column(Modifier.padding(16.dp)) {
+                Text(
+                    text = LoremIpsum(50).values.first(),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight(700),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    text = "R$ 14,99",
+                    Modifier.padding(top = 8.dp),
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight(400)
+                )
             }
-        }
-    }
-}
-
-@Composable
-fun MyFirstComposable() {
-    Text(text = "My first composable")
-}
-
-@Preview(
-    showSystemUi = true,
-    uiMode = UI_MODE_NIGHT_YES
-)
-@Preview(
-    name = "TextPreview",
-    heightDp = 200,
-    widthDp = 300,
-    showBackground = true
-)
-
-@Composable
-fun MyFirstComposablePreview() {
-    AluveryTheme {
-        Surface {
-            MyFirstComposable()
         }
     }
 }
