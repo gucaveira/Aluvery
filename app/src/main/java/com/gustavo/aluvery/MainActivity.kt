@@ -5,8 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -41,19 +43,48 @@ class MainActivity : ComponentActivity() {
         setContent {
             AluveryTheme {
                 Surface {
-                    ProductItem()
+                    ProductsSection()
                 }
             }
         }
     }
 }
 
-@Preview(showBackground = true)
+@Composable
+fun ProductsSection() {
+    Column {
+        Text(
+            text = "Promoções",
+            modifier = Modifier.padding(
+                start = 16.dp,
+                top = 16.dp,
+                end = 16.dp,
+            ),
+            fontSize = 20.sp,
+            fontWeight = FontWeight(400)
+        )
+        Row(
+            modifier = Modifier
+                .padding(
+                    start = 16.dp,
+                    top = 16.dp,
+                    end = 16.dp,
+                    bottom = 16.dp
+                )
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            ProductItem()
+            ProductItem()
+            ProductItem()
+        }
+    }
+}
+
 @Composable
 fun ProductItem() {
 
     Surface(
-        modifier = Modifier.padding(8.dp),
         shape = RoundedCornerShape(15.dp),
         elevation = 4.dp
     ) {
@@ -87,7 +118,7 @@ fun ProductItem() {
                 )
             }
 
-            Spacer(modifier = Modifier.height(imageSize/2))
+            Spacer(modifier = Modifier.height(imageSize / 2))
 
             Column(Modifier.padding(16.dp)) {
                 Text(
@@ -107,3 +138,11 @@ fun ProductItem() {
         }
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+private fun ProductsSectionPreview() = ProductsSection()
+
+@Preview(showBackground = true)
+@Composable
+private fun ProductItemPreview() = ProductItem()
