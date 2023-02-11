@@ -67,19 +67,20 @@ fun ProductsSection() {
         )
         Row(
             modifier = Modifier
-                .padding(
-                    top = 16.dp,
-                    bottom = 16.dp,
-                )
+                .padding(top = 16.dp, bottom = 16.dp)
                 .fillMaxWidth()
-                .horizontalScroll(rememberScrollState()),
+                .horizontalScroll(rememberScrollState())
+                //dessa forma, esse padding será aplicado
+                // apenas no conteúdo e mantém exatamente
+                // o mesmo aspecto visual.
+                .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Spacer(modifier = Modifier)
+            // Spacer(modifier = Modifier)
             ProductItem()
             ProductItem()
             ProductItem()
-            Spacer(modifier = Modifier)
+            //Spacer(modifier = Modifier)
         }
     }
 }
