@@ -1,4 +1,4 @@
-package com.gustavo.aluvery
+package com.gustavo.aluvery.extensions
 
 import java.math.BigDecimal
 import java.text.NumberFormat

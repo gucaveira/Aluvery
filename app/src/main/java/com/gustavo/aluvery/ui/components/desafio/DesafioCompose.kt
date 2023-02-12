@@ -1,4 +1,4 @@
-package com.gustavo.aluvery
+package com.gustavo.aluvery.ui.components.desafio
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.gustavo.aluvery.R
 import com.gustavo.aluvery.ui.theme.AluveryTheme
 import com.gustavo.aluvery.ui.theme.Purple200
 import com.gustavo.aluvery.ui.theme.Purple700
@@ -74,7 +75,7 @@ fun ProductItemDesafio() {
                 ) {
 
                     Image(
-                        painter = painterResource(id = R.drawable.ic_launcher_background),
+                        painter = painterResource(id = R.drawable.placeholder),
                         contentDescription = null,
                         Modifier
                             .size(imageSize)
