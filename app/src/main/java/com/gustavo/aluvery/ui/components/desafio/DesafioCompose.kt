@@ -37,8 +37,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gustavo.aluvery.R
 import com.gustavo.aluvery.ui.theme.AluveryTheme
-import com.gustavo.aluvery.ui.theme.Purple200
-import com.gustavo.aluvery.ui.theme.Purple700
+import com.gustavo.aluvery.ui.theme.Indigo400
+import com.gustavo.aluvery.ui.theme.Indigo500
 
 class DesafioCompose : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,7 +70,7 @@ fun ProductItemDesafio() {
                         .fillMaxHeight()
                         .width(imageSize)
                         .background(
-                            brush = Brush.verticalGradient(colors = listOf(Purple700, Purple200))
+                            brush = Brush.verticalGradient(colors = listOf(Indigo400, Indigo500))
                         )
                 ) {
 
@@ -85,7 +85,7 @@ fun ProductItemDesafio() {
                             .border(
                                 BorderStroke(
                                     2.dp,
-                                    brush = Brush.verticalGradient(listOf(Purple200, Purple700))
+                                    brush = Brush.verticalGradient(listOf(Indigo400, Indigo500))
                                 ),
                                 CircleShape
                             )

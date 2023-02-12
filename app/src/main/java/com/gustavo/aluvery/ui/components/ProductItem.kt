@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -32,8 +33,7 @@ import androidx.compose.ui.unit.sp
 import com.gustavo.aluvery.R
 import com.gustavo.aluvery.extensions.toBrazilianCurrency
 import com.gustavo.aluvery.model.Product
-import com.gustavo.aluvery.ui.theme.Purple500
-import com.gustavo.aluvery.ui.theme.Teal200
+import com.gustavo.aluvery.ui.theme.AluveryTheme
 import java.math.BigDecimal
 
 @Composable
@@ -46,7 +46,7 @@ fun ProductItem(product: Product) {
         Column(
             modifier = Modifier
                 .heightIn(250.dp, 300.dp)
-                .width(250.dp)
+                .width(200.dp)
         ) {
             val imageSize = 100.dp
             Box(
@@ -55,15 +55,16 @@ fun ProductItem(product: Product) {
                     .background(
                         brush = Brush.horizontalGradient(
                             colors = listOf(
-                                Purple500,
-                                Teal200
+                                MaterialTheme.colors.primary,
+                                MaterialTheme.colors.secondary
                             )
                         )
                     )
                     .fillMaxWidth()
             ) {
                 Image(
-                    painter = painterResource(id = product.image),
+                    // TODO: ajustar imagem do produto
+                    painter = painterResource(id = R.drawable.placeholder),
                     contentDescription = null,
                     Modifier
                         .size(imageSize)
@@ -96,11 +97,18 @@ fun ProductItem(product: Product) {
 }
 
 @Preview(showBackground = true)
+
 @Composable
-private fun ProductItemPreview() = ProductItem(
-    Product(
-        name = LoremIpsum(50).values.first(),
-        price = BigDecimal("14.99"),
-        image = R.drawable.placeholder
-    )
-)
+
+private fun ProductItemPreview() {
+    AluveryTheme {
+        Surface {
+            ProductItem(
+                Product(
+                    name = LoremIpsum(50).values.first(),
+                    price = BigDecimal("14.99")
+                )
+            )
+        }
+    }
+}

@@ -40,8 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gustavo.aluvery.R
 import com.gustavo.aluvery.ui.theme.AluveryTheme
-import com.gustavo.aluvery.ui.theme.Purple500
-import com.gustavo.aluvery.ui.theme.Teal200
+import com.gustavo.aluvery.ui.theme.Indigo400
+import com.gustavo.aluvery.ui.theme.Indigo500
 
 class DesafioScrollVertical : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,7 +103,7 @@ fun ProductItemScroll() {
                     .background(
                         brush = Brush.horizontalGradient(
                             colors = listOf(
-                                Purple500, Teal200
+                                Indigo400, Indigo500
                             )
                         )
                     )
