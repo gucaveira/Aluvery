@@ -5,9 +5,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,10 +36,21 @@ fun HomeScreen(sections: Map<String, List<Product>>) {
 
         OutlinedTextField(
             value = text,
-            modifier = Modifier.fillMaxWidth(),
             onValueChange = { newValue ->
                 text = newValue
-            }
+            },
+            modifier = Modifier
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(100),
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "icone de busca"
+                )
+            },
+            label = { Text(text = "Produto") },
+            placeholder = { Text(text = "O que você procura?") }
         )
 
         LazyColumn(
