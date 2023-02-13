@@ -1,12 +1,12 @@
 package com.gustavo.aluvery.ui.components
 
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -34,22 +34,17 @@ fun ProductsSection(
             fontSize = 20.sp,
             fontWeight = FontWeight(400)
         )
-        Row(
+        LazyRow(
             modifier = Modifier
                 .padding(top = 8.dp)
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState())
-                //dessa forma, esse padding será aplicado
-                // apenas no conteúdo e mantém exatamente
-                // o mesmo aspecto visual.
-                .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            // add padding apenas no conteudo
+            contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
-            // Spacer(modifier = Modifier)
-            for (p in products) {
+            items(products) { p ->
                 ProductItem(product = p)
             }
-            //Spacer(modifier = Modifier)
         }
     }
 }
