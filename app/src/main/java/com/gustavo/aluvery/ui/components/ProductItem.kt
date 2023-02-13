@@ -37,9 +37,10 @@ import com.gustavo.aluvery.ui.theme.AluveryTheme
 import java.math.BigDecimal
 
 @Composable
-fun ProductItem(product: Product) {
+fun ProductItem(product: Product, modifier: Modifier = Modifier) {
 
     Surface(
+        modifier,
         shape = RoundedCornerShape(15.dp),
         elevation = 4.dp
     ) {
