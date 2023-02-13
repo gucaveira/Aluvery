@@ -61,12 +61,12 @@ fun CardProductItem(
                     text = product.price.toBrazilianCurrency()
                 )
             }
-            // TODO: adicionar descrição do produto
-            // Text(
-            //     text = product.description,
-            //     Modifier
-            //         .padding(16.dp)
-            // )
+            product.description?.let {
+                Text(
+                    text = it,
+                    Modifier.padding(16.dp)
+                )
+            }
         }
     }
 }
