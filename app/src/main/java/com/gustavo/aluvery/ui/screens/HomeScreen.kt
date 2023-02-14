@@ -27,14 +27,17 @@ import com.gustavo.aluvery.model.Product
 import com.gustavo.aluvery.sampledata.sampleProducts
 import com.gustavo.aluvery.sampledata.sampleSections
 import com.gustavo.aluvery.ui.components.CardProductItem
+import com.gustavo.aluvery.ui.components.ProductsSection
 import com.gustavo.aluvery.ui.theme.AluveryTheme
 
 @Composable
-fun HomeScreen(sections: Map<String, List<Product>>) {
+fun HomeScreen(
+    sections: Map<String, List<Product>>,
+    searchText: String = ""
+) {
     Column {
-        // sempre usar remeber para evitar loop
-        // atualalizacao de estado
-        var text by remember { mutableStateOf("") }
+        // sempre usar remeber para evitar loop de atualalizacao de estado
+        var text by remember { mutableStateOf(searchText) }
 
         OutlinedTextField(
             value = text,
@@ -60,19 +63,24 @@ fun HomeScreen(sections: Map<String, List<Product>>) {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(bottom = 16.dp)
         ) {
-            items(sampleProducts) { p ->
-                CardProductItem(product = p, Modifier.padding(horizontal = 16.dp))
+
+            if (text.isBlank()) {
+                for (section in sections) {
+                    val title = section.key
+                    val products = section.value
+                    item {
+                        ProductsSection(
+                            title = title,
+                            products = products
+                        )
+                    }
+                }
+            } else {
+                items(sampleProducts) { p ->
+                    CardProductItem(product = p, Modifier.padding(horizontal = 16.dp))
+                }
             }
-            /*     for (section in sections) {
-                     val title = section.key
-                     val products = section.value
-                     item {
-                         ProductsSection(
-                             title = title,
-                             products = products
-                         )
-                     }
-                 }*/
+
         }
     }
 }
@@ -83,6 +91,16 @@ private fun HomeScreenPreview() {
     AluveryTheme {
         Surface {
             HomeScreen(sampleSections)
+        }
+    }
+}
+
+@Preview
+@Composable
+fun HomeScreenWithSearchTextPreview() {
+    AluveryTheme {
+        Surface {
+            HomeScreen(sections = sampleSections, searchText = "a")
         }
     }
 }
