@@ -38,6 +38,15 @@ fun HomeScreen(
     Column {
         // sempre usar remeber para evitar loop de atualalizacao de estado
         var text by remember { mutableStateOf(searchText) }
+        val searchedProduct = remember(text) {
+
+            if (text.isNotBlank()) {
+                sampleProducts.filter { product ->
+                    product.name.contains(text, ignoreCase = true) ||
+                            product.description?.contains(text, true) ?: true
+                }
+            } else emptyList()
+        }
 
         OutlinedTextField(
             value = text,
@@ -76,7 +85,7 @@ fun HomeScreen(
                     }
                 }
             } else {
-                items(sampleProducts) { p ->
+                items(searchedProduct) { p ->
                     CardProductItem(product = p, Modifier.padding(horizontal = 16.dp))
                 }
             }
