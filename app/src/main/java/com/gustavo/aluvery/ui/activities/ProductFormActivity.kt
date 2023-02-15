@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,6 +39,7 @@ import com.gustavo.aluvery.R
 import com.gustavo.aluvery.model.Product
 import com.gustavo.aluvery.ui.theme.AluveryTheme
 import java.math.BigDecimal
+import java.text.DecimalFormat
 
 class ProductFormActivity : ComponentActivity() {
 
@@ -106,15 +108,25 @@ fun ProductFormScreen() {
             label = { Text(text = "Nome") },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Next
+                imeAction = ImeAction.Next,
+                capitalization = KeyboardCapitalization.Words
             )
         )
 
         var price by remember { mutableStateOf("") }
 
+        val formatter = DecimalFormat("#,##")
         TextField(
             value = price,
-            onValueChange = { price = it },
+            onValueChange = {
+                try {
+                    price = formatter.format(BigDecimal(it))
+                } catch (e: java.lang.IllegalArgumentException) {
+                    if (it.isBlank()) {
+                        price = it
+                    }
+                }
+            },
             modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Preço") },
             keyboardOptions = KeyboardOptions(
@@ -133,8 +145,10 @@ fun ProductFormScreen() {
                 .heightIn(min = 100.dp),
             label = { Text(text = "Descrição") },
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text
-            )
+                keyboardType = KeyboardType.Text,
+                capitalization = KeyboardCapitalization.Sentences,
+
+                )
         )
 
         Button(
