@@ -1,6 +1,7 @@
 package com.gustavo.aluvery.ui.activities
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -108,13 +109,19 @@ fun saveProduct(
     price: String,
     description: String
 ) {
-    Product(
+    val convertedPrice = try {
+        BigDecimal(price.trim())
+    } catch (e: java.lang.NumberFormatException) {
+        BigDecimal.ZERO
+    }
+
+    val product = Product(
         name = name,
         image = url,
-        price = BigDecimal(price),
+        price = convertedPrice,
         description = description
     )
-    Log.i
+    Log.i("ProductFormActivity", "ProductFormScreen: $product")
 }
 
 @Preview
