@@ -15,29 +15,44 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.gustavo.aluvery.dao.ProductDao
+import com.gustavo.aluvery.sampledata.sampleCandies
+import com.gustavo.aluvery.sampledata.sampleDrinks
 import com.gustavo.aluvery.sampledata.sampleSections
 import com.gustavo.aluvery.ui.screens.HomeScreen
 import com.gustavo.aluvery.ui.theme.AluveryTheme
 
 class MainActivity : ComponentActivity() {
+
+    private val dao = ProductDao()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            App {
+            App({
                 startActivity(Intent(this, ProductFormActivity::class.java))
-            }
+            }, {
+                dao.products()
+                val sections = mapOf(
+                    "Todos produtos" to dao.products(),
+                    "Promoções" to sampleDrinks + sampleCandies,
+                    "Doces" to sampleCandies,
+                    "Bebidas" to sampleDrinks
+                )
+                Surface {
+                    HomeScreen(sections = sections)
+                }
+            })
         }
     }
 }
 
 @Composable
-fun App(onFabClick: () -> Unit = {}) {
+fun App(onFabClick: () -> Unit = {}, content: @Composable () -> Unit = {}) {
     AluveryTheme {
         Scaffold(floatingActionButton = { SetFloatingActionButton(onFabClick) }) { paddingValues ->
             Box(modifier = Modifier.padding(paddingValues)) {
-                Surface {
-                    HomeScreen(sampleSections)
-                }
+                content()
             }
         }
     }
@@ -53,5 +68,7 @@ fun SetFloatingActionButton(onFabClick: () -> Unit = {}) {
 @Preview
 @Composable
 private fun AppPreview() {
-    App()
+    App {
+        HomeScreen(sections = sampleSections)
+    }
 }

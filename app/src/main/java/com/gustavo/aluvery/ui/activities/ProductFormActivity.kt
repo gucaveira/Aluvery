@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.gustavo.aluvery.R
+import com.gustavo.aluvery.dao.ProductDao
 import com.gustavo.aluvery.model.Product
 import com.gustavo.aluvery.ui.theme.AluveryTheme
 import java.math.BigDecimal
@@ -43,12 +44,17 @@ import java.text.DecimalFormat
 
 class ProductFormActivity : ComponentActivity() {
 
+    private val dao = ProductDao()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             AluveryTheme {
                 Surface {
-                    ProductFormScreen()
+                    ProductFormScreen(onSaveClick = { product: Product ->
+                        dao.save(product)
+                        finish()
+                    })
                 }
             }
         }
@@ -56,7 +62,7 @@ class ProductFormActivity : ComponentActivity() {
 }
 
 @Composable
-fun ProductFormScreen() {
+fun ProductFormScreen(onSaveClick: (Product) -> Unit = {}) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -166,7 +172,7 @@ fun saveProduct(
     name: String,
     url: String,
     price: String,
-    description: String
+    description: String,
 ) {
     val convertedPrice = try {
         BigDecimal(price.trim())
