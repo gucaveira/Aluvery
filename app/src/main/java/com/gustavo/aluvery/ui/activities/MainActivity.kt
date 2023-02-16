@@ -13,12 +13,9 @@ import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.gustavo.aluvery.dao.ProductDao
-import com.gustavo.aluvery.sampledata.sampleCandies
-import com.gustavo.aluvery.sampledata.sampleDrinks
 import com.gustavo.aluvery.sampledata.sampleSections
 import com.gustavo.aluvery.ui.screens.HomeScreen
 import com.gustavo.aluvery.ui.theme.AluveryTheme
@@ -34,16 +31,9 @@ class MainActivity : ComponentActivity() {
             App({
                 startActivity(Intent(this, ProductFormActivity::class.java))
             }, {
-                dao.products()
-                val sections = mapOf(
-                    "Todos produtos" to dao.products(),
-                    "Promoções" to sampleDrinks + sampleCandies,
-                    "Doces" to sampleCandies,
-                    "Bebidas" to sampleDrinks
-                )
+                val products = dao.products()
                 Surface {
-                    val state = remember(sections) { HomeScreenUiState(sections) }
-                    HomeScreen(state = state)
+                    HomeScreen(products = products)
                 }
             })
         }
