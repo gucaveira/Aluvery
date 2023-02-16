@@ -13,6 +13,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.gustavo.aluvery.dao.ProductDao
@@ -21,6 +22,7 @@ import com.gustavo.aluvery.sampledata.sampleDrinks
 import com.gustavo.aluvery.sampledata.sampleSections
 import com.gustavo.aluvery.ui.screens.HomeScreen
 import com.gustavo.aluvery.ui.theme.AluveryTheme
+import com.gustavo.aluvery.ui.uiState.HomeScreenUiState
 
 class MainActivity : ComponentActivity() {
 
@@ -40,7 +42,8 @@ class MainActivity : ComponentActivity() {
                     "Bebidas" to sampleDrinks
                 )
                 Surface {
-                    HomeScreen(sections = sections)
+                    val state = remember(sections) { HomeScreenUiState(sections) }
+                    HomeScreen(state = state)
                 }
             })
         }
@@ -69,6 +72,6 @@ fun SetFloatingActionButton(onFabClick: () -> Unit = {}) {
 @Composable
 private fun AppPreview() {
     App {
-        HomeScreen(sections = sampleSections)
+        HomeScreen(HomeScreenUiState(sections = sampleSections))
     }
 }

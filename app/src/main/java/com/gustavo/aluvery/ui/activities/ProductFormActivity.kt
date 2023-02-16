@@ -158,7 +158,7 @@ fun ProductFormScreen(onSaveClick: (Product) -> Unit = {}) {
         )
 
         Button(
-            onClick = { saveProduct(name, url, price, description) },
+            onClick = { onSaveClick(saveProduct(name, url, price, description)) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = "Salvar")
@@ -173,10 +173,10 @@ fun saveProduct(
     url: String,
     price: String,
     description: String,
-) {
+): Product {
     val convertedPrice = try {
-        BigDecimal(price.trim())
-    } catch (e: java.lang.NumberFormatException) {
+        BigDecimal(price.replace(",", "."))
+    } catch (e: NumberFormatException) {
         BigDecimal.ZERO
     }
 
@@ -187,6 +187,7 @@ fun saveProduct(
         description = description
     )
     Log.i("ProductFormActivity", "ProductFormScreen: $product")
+    return product
 }
 
 @Preview(uiMode = UI_MODE_NIGHT_YES)

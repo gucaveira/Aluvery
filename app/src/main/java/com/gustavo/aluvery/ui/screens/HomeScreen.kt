@@ -9,11 +9,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.gustavo.aluvery.model.Product
 import com.gustavo.aluvery.sampledata.sampleSections
 import com.gustavo.aluvery.ui.components.CardProductItem
 import com.gustavo.aluvery.ui.components.ProductsSection
@@ -22,15 +20,9 @@ import com.gustavo.aluvery.ui.theme.AluveryTheme
 import com.gustavo.aluvery.ui.uiState.HomeScreenUiState
 
 @Composable
-fun HomeScreen(
-    sections: Map<String, List<Product>>,
-    searchText: String = ""
-) {
+fun HomeScreen(state: HomeScreenUiState = HomeScreenUiState()) {
     Column {
-        // sempre usar remeber para evitar loop de atualalizacao de estado
-        val state = remember { HomeScreenUiState(searchText) }
-
-        SearchTextField(searchText = state.text, onSearchChanger = { state.text = it })
+        SearchTextField(searchText = state.text, onSearchChanger = state.onSearchChanger)
 
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -39,7 +31,7 @@ fun HomeScreen(
         ) {
 
             if (state.isShowSections()) {
-                for (section in sections) {
+                for (section in state.sections) {
                     val title = section.key
                     val products = section.value
                     item {
@@ -63,7 +55,7 @@ fun HomeScreen(
 private fun HomeScreenPreview() {
     AluveryTheme {
         Surface {
-            HomeScreen(sampleSections)
+            HomeScreen(HomeScreenUiState(sections = sampleSections))
         }
     }
 }
@@ -73,7 +65,7 @@ private fun HomeScreenPreview() {
 fun HomeScreenWithSearchTextPreview() {
     AluveryTheme {
         Surface {
-            HomeScreen(sections = sampleSections, searchText = "a")
+            HomeScreen(HomeScreenUiState(sections = sampleSections, searchText = "a"))
         }
     }
 }
