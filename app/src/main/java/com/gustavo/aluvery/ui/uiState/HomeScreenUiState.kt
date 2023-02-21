@@ -2,7 +2,7 @@ package com.gustavo.aluvery.ui.uiState
 
 import com.gustavo.aluvery.model.Product
 
-class HomeScreenUiState(
+data class HomeScreenUiState(
     val sections: Map<String, List<Product>> = emptyMap(),
     val searchedProduct: List<Product> = emptyList(),
     val searchText: String = "",

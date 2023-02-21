@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FloatingActionButton
@@ -15,15 +16,15 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.gustavo.aluvery.dao.ProductDao
 import com.gustavo.aluvery.sampledata.sampleSections
 import com.gustavo.aluvery.ui.screens.HomeScreen
 import com.gustavo.aluvery.ui.theme.AluveryTheme
 import com.gustavo.aluvery.ui.uiState.HomeScreenUiState
+import com.gustavo.aluvery.ui.viewmodels.HomeScreenViewModel
 
 class MainActivity : ComponentActivity() {
 
-    private val dao = ProductDao()
+    private val viewModel by viewModels<HomeScreenViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +32,8 @@ class MainActivity : ComponentActivity() {
             App({
                 startActivity(Intent(this, ProductFormActivity::class.java))
             }, {
-                val products = dao.products()
                 Surface {
-                    HomeScreen(products = products)
+                    HomeScreen(viewModel)
                 }
             })
         }
