@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -79,7 +80,7 @@ fun ProductFormScreen(onSaveClick: (Product) -> Unit = {}) {
             fontSize = 28.sp
         )
 
-        var url by remember { mutableStateOf("") }
+        var url by rememberSaveable { mutableStateOf("") }
 
         if (url.isNotBlank()) {
             AsyncImage(
@@ -105,7 +106,7 @@ fun ProductFormScreen(onSaveClick: (Product) -> Unit = {}) {
             )
         )
 
-        var name by remember { mutableStateOf("") }
+        var name by rememberSaveable { mutableStateOf("") }
 
         TextField(
             value = name,
@@ -119,9 +120,11 @@ fun ProductFormScreen(onSaveClick: (Product) -> Unit = {}) {
             )
         )
 
-        var price by remember { mutableStateOf("") }
+        var price by rememberSaveable { mutableStateOf("") }
 
-        val formatter = DecimalFormat("#,##")
+        val formatter = remember {
+            DecimalFormat("#,##")
+        }
         TextField(
             value = price,
             onValueChange = {
@@ -141,7 +144,7 @@ fun ProductFormScreen(onSaveClick: (Product) -> Unit = {}) {
             )
         )
 
-        var description by remember { mutableStateOf("") }
+        var description by rememberSaveable { mutableStateOf("") }
 
         TextField(
             value = description,
