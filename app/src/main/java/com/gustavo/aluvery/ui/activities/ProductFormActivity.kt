@@ -2,9 +2,9 @@ package com.gustavo.aluvery.ui.activities
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,11 +21,9 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -37,23 +35,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.gustavo.aluvery.R
-import com.gustavo.aluvery.dao.ProductDao
-import com.gustavo.aluvery.model.Product
 import com.gustavo.aluvery.ui.theme.AluveryTheme
+import com.gustavo.aluvery.ui.viewmodels.ProductFormScreenViewModel
 import java.math.BigDecimal
 import java.text.DecimalFormat
 
 class ProductFormActivity : ComponentActivity() {
 
-    private val dao = ProductDao()
-
+    private val viewModel by viewModels<ProductFormScreenViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             AluveryTheme {
                 Surface {
-                    ProductFormScreen(onSaveClick = { product: Product ->
-                        dao.save(product)
+                    ProductFormScreen(viewModel, onSaveClick = {
+                        viewModel.save()
                         finish()
                     })
                 }
@@ -63,7 +59,12 @@ class ProductFormActivity : ComponentActivity() {
 }
 
 @Composable
-fun ProductFormScreen(onSaveClick: (Product) -> Unit = {}) {
+fun ProductFormScreen(
+    viewModel: ProductFormScreenViewModel,
+    onSaveClick: () -> Unit = {},
+) {
+    val state by viewModel.uiState.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -80,11 +81,10 @@ fun ProductFormScreen(onSaveClick: (Product) -> Unit = {}) {
             fontSize = 28.sp
         )
 
-        var url by rememberSaveable { mutableStateOf("") }
 
-        if (url.isNotBlank()) {
+        if (state.url.isNotBlank()) {
             AsyncImage(
-                model = url,
+                model = state.url,
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -96,8 +96,8 @@ fun ProductFormScreen(onSaveClick: (Product) -> Unit = {}) {
         }
 
         TextField(
-            value = url,
-            onValueChange = { url = it },
+            value = state.url,
+            onValueChange = { state.url = it },
             modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Url da Imagem") },
             keyboardOptions = KeyboardOptions(
@@ -106,11 +106,10 @@ fun ProductFormScreen(onSaveClick: (Product) -> Unit = {}) {
             )
         )
 
-        var name by rememberSaveable { mutableStateOf("") }
 
         TextField(
-            value = name,
-            onValueChange = { name = it },
+            value = state.name,
+            onValueChange = { state.name = it },
             modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Nome") },
             keyboardOptions = KeyboardOptions(
@@ -120,19 +119,18 @@ fun ProductFormScreen(onSaveClick: (Product) -> Unit = {}) {
             )
         )
 
-        var price by rememberSaveable { mutableStateOf("") }
 
         val formatter = remember {
             DecimalFormat("#,##")
         }
         TextField(
-            value = price,
+            value = state.price,
             onValueChange = {
                 try {
-                    price = formatter.format(BigDecimal(it))
+                    state.price = formatter.format(BigDecimal(it))
                 } catch (e: java.lang.IllegalArgumentException) {
                     if (it.isBlank()) {
-                        price = it
+                        state.price = it
                     }
                 }
             },
@@ -144,11 +142,10 @@ fun ProductFormScreen(onSaveClick: (Product) -> Unit = {}) {
             )
         )
 
-        var description by rememberSaveable { mutableStateOf("") }
 
         TextField(
-            value = description,
-            onValueChange = { description = it },
+            value = state.description,
+            onValueChange = { state.description = it },
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(min = 100.dp),
@@ -161,7 +158,7 @@ fun ProductFormScreen(onSaveClick: (Product) -> Unit = {}) {
         )
 
         Button(
-            onClick = { onSaveClick(saveProduct(name, url, price, description)) },
+            onClick = onSaveClick,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = "Salvar")
@@ -171,34 +168,12 @@ fun ProductFormScreen(onSaveClick: (Product) -> Unit = {}) {
     }
 }
 
-fun saveProduct(
-    name: String,
-    url: String,
-    price: String,
-    description: String,
-): Product {
-    val convertedPrice = try {
-        BigDecimal(price.replace(",", "."))
-    } catch (e: NumberFormatException) {
-        BigDecimal.ZERO
-    }
-
-    val product = Product(
-        name = name,
-        image = url,
-        price = convertedPrice,
-        description = description
-    )
-    Log.i("ProductFormActivity", "ProductFormScreen: $product")
-    return product
-}
-
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
 private fun ProductFormScreenPreview() {
     AluveryTheme {
         Surface {
-            ProductFormScreen()
+            //   ProductFormScreen()
         }
     }
 }
